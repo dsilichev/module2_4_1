@@ -8,11 +8,8 @@ import { SignUpAdv } from './components/SignUpAdv.jsx';
 export const App = () => {
   return (
     <div className={styles.App}>
-      <SelectComponent />
-      <UseRefComponent />
-      <UseFormComponent />
       <SignUp />
-      <SignUpAdv />
+      {/* <SignUpAdv /> */}
     </div>
   );
 };
