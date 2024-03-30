@@ -12,4 +12,9 @@
 
 .errorLabel {
   color: red;
+  font-size: small;
+}
+
+.submitButton:focus {
+  font-weight: bold;
 }
