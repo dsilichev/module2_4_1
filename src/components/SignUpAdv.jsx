@@ -12,7 +12,9 @@ const fieldScheme = yup.object()
   email: yup.string()
   .matches(EMAILREGEX, 'Email должен содержать @'),
   password: yup.string()
-  .matches(PASSWORDREGEX, 'Пароль от 8 символов, должен содержать прописную, заглавную букву и спецсимвол !@#$%^&*')
+  .matches(PASSWORDREGEX, 'Пароль от 8 символов, должен содержать прописную, заглавную букву и спецсимвол !@#$%^&*'),
+  passwordVerify: yup.string()
+  .oneOf([yup.ref("password")], 'Пароль не совпадает')
 });
 
 export const SignUpAdv = () => {
@@ -33,11 +35,7 @@ export const SignUpAdv = () => {
 
       const emailError = errors.email?.message;
       const passwordError = errors.password?.message;
-      const passwordVerifyError = '';
-
-      const checkPasswordVerify = () => {
-        
-      }
+      const passwordVerifyError = errors.passwordVerify?.message;
 
       const onSubmit = (formData) => {
         console.log(formData);
@@ -69,13 +67,13 @@ export const SignUpAdv = () => {
           type="password"
           placeholder="Повторите пароль"
           {...register('passwordVerify', /*loginProps*/)}
-          onBlur={checkPasswordVerify}
+          
         />
         <button
           className={styles.submitButton}
           ref={submitButtonRef}
           type="submit"
-          disabled={false}
+          disabled={emailError || passwordError || passwordVerifyError}
         >
           Зарегистрироваться
         </button>

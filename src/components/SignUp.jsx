@@ -37,8 +37,6 @@ export const SignUp = () => {
 
   const submitButtonRef = useRef(null);
 
-  console.log(emailError || passwordError || passwordVerifyError || !(email && password && passwordVerify));
-
   const checkEmail = (value) => {
     const error = validateField('email', value);
     setEmailError(error);
@@ -62,7 +60,6 @@ export const SignUp = () => {
   };
 
   const checkFormComplete = () => {
-    console.log({email, password, passwordVerify , emailError, passwordError, passwordVerifyError});
     if (
       email &&
       password &&
@@ -71,7 +68,6 @@ export const SignUp = () => {
       !passwordError &&
       !passwordVerifyError
     ) {
-      console.log('focus');
       submitButtonRef.current.focus();
     }
   };
