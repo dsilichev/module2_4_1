@@ -16,15 +16,16 @@ const validateField = (fieldName, field) => {
       break;
     case 'password':
       if (!PASSWORDREGEX.test(field)) {
-        error = 'Пароль от 8 символов, должен содержать, прописную, заглавную букву и спецсимвол';
+        error =
+          'Пароль от 8 символов, должен содержать прописную, заглавную букву и спецсимвол !@#$%^&*';
       }
       break;
-    default: error = '';
+    default:
+      error = '';
   }
 
-  console.log(error);
   return error;
-}
+};
 
 export const SignUp = () => {
   const { getState, updateState } = useStore();
@@ -36,15 +37,20 @@ export const SignUp = () => {
 
   const submitButtonRef = useRef(null);
 
-  const checkEmail = () => {
-    setEmailError(validateField('email', email));
-    checkFormComplete();
-  }
+  console.log(emailError || passwordError || passwordVerifyError || !(email && password && passwordVerify));
+
+  const checkEmail = (value) => {
+    const error = validateField('email', value);
+    setEmailError(error);
+    if (!error) {
+      checkFormComplete();
+    }
+  };
 
   const checkPassword = () => {
     setPasswordError(validateField('password', password));
     checkFormComplete();
-  }
+  };
 
   const checkPasswordVerify = () => {
     if (passwordVerify !== password) {
@@ -53,19 +59,27 @@ export const SignUp = () => {
       setPasswordVerifyError('');
     }
     checkFormComplete();
-  }
+  };
 
   const checkFormComplete = () => {
-    if (email && password && passwordVerify && !emailError && !passwordError && !passwordVerifyError) {
+    console.log({email, password, passwordVerify , emailError, passwordError, passwordVerifyError});
+    if (
+      email &&
+      password &&
+      passwordVerify &&
+      !emailError &&
+      !passwordError &&
+      !passwordVerifyError
+    ) {
+      console.log('focus');
       submitButtonRef.current.focus();
-      console.log('form ok');
     }
-  }
+  };
 
   const onSubmit = (event) => {
     event.preventDefault();
     console.log('Данные:', { email, password, passwordVerify });
-  }
+  };
 
   return (
     <div>
@@ -78,7 +92,7 @@ export const SignUp = () => {
           placeholder="Почта"
           value={email}
           onChange={({ target }) => updateState('email', target.value)}
-          onBlur={checkEmail}
+          onBlur={({ target }) => checkEmail(target.value)}
         />
         {passwordError && <label className={styles.errorLabel}>{passwordError}</label>}
         <input
@@ -89,7 +103,9 @@ export const SignUp = () => {
           onChange={({ target }) => updateState('password', target.value)}
           onBlur={checkPassword}
         />
-        {passwordVerifyError && <label className={styles.errorLabel}>{passwordVerifyError}</label>}
+        {passwordVerifyError && (
+          <label className={styles.errorLabel}>{passwordVerifyError}</label>
+        )}
         <input
           name="passwordVerify"
           type="password"
@@ -98,7 +114,14 @@ export const SignUp = () => {
           onChange={({ target }) => updateState('passwordVerify', target.value)}
           onBlur={checkPasswordVerify}
         />
-        <button className={styles.submitButton} ref={submitButtonRef} type="submit" disabled={emailError || passwordError || passwordVerifyError}>Зарегистрироваться</button>
+        <button
+          className={styles.submitButton}
+          ref={submitButtonRef}
+          type="submit"
+          disabled={emailError || passwordError || passwordVerifyError || !(email && password && passwordVerify)}
+        >
+          Зарегистрироваться
+        </button>
       </form>
     </div>
   );

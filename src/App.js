@@ -9,7 +9,7 @@ export const App = () => {
   return (
     <div className={styles.App}>
       <SignUp />
-      {/* <SignUpAdv /> */}
+      <SignUpAdv />
     </div>
   );
 };
